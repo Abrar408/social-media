@@ -1,13 +1,56 @@
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import axios from 'axios'
 const Login = () => {
     const [cred,setCred] = useState({
         email:'',
         pass:''
     })
-    // console.log(cred)
+    const [err,setErr] = useState('')
+    const checkIfEmpty =()=>{
+        if(cred.email == '' || cred.pass == ''){
+            setErr('required fields cannot be blank');
+            return false
+        }
+        else{
+            setErr('')
+            return true
+        }
+    }
+    const checkEmail =()=>{
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(cred.email))
+        {
+            setErr('');
+            return true
+        }else{
+            setErr('email is not a valid email address');
+            return false
+        }            
+    }
+    const loginUser = () => {
+        if(checkIfEmpty()){
+            if(checkEmail()){
+                axios.post('http://localhost:3000/loginUser',cred)
+                .then(res => {
+                    if(res.status == 200){
+                        console.log(res.data)
+                        // setSuccess(res.data)
+                        // setCred({...cred,
+                        //     user:'',
+                        //     email:'',
+                        //     pass:'',
+                        //     confirmPass:''})
+                        // setCheckBox(false)
+                    }
+                })
+                .catch(err => {
+                    setErr(err.response.data)
+                    console.log(err.response.data)
+                })
+            }
+        }
+    }
   return (
     <>
     <Grid>        
@@ -20,8 +63,9 @@ const Login = () => {
             placeholder='Enter Email' required sx={{width:'100%',m:'10px 0px'}} />   
             <TextField value={cred.pass} onChange={(e)=>{setCred({...cred,pass:e.target.value})}} size='small' label='Password' variant='outlined'
             placeholder='Enter Password' type='password' required sx={{width:'100%',m:'10px 0px'}} />  
+            <Typography color='red'>{err}</Typography>
             <FormControlLabel control={<Checkbox />} label="Remember Me" />  
-            <Button variant='contained' type='submit' fullWidth >Login</Button>    
+            <Button variant='contained' type='submit' fullWidth onClick={loginUser} >Login</Button>    
             <Typography sx={{m:'20px 0px 10px 0px'}}>
                 <Link>
                     Forgot Password?
