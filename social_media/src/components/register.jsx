@@ -12,6 +12,7 @@ const Register = () => {
     })
     const [checkBox,setCheckBox] = useState(false)
     const [err,setErr] = useState('')
+    const [success,setSuccess] = useState('')
 
     const checkIfEmpty =()=>{
         if(cred.user == '' || cred.email == '' || cred.pass == '' || cred.confirmPass == ''){
@@ -64,7 +65,14 @@ const Register = () => {
             axios.post('http://localhost:3000/regUser',cred)
             .then(res => {
                 if(res.status == 200){
-                    console.log("ok")
+                    console.log(res.data)
+                    setSuccess(res.data)
+                    setCred({...cred,
+                        user:'',
+                        email:'',
+                        pass:'',
+                        confirmPass:''})
+                    setCheckBox(false)
                 }
             })
             .catch(err => {
@@ -81,6 +89,7 @@ const Register = () => {
             <Grid align='center' >
                 {/* <Avatar sx={{backgroundColor:'skyblue'}}><AddCircleOutlineOutlinedIcon/></Avatar> */}
                 <h2 style={{margin:'0px'}}>Register</h2>
+                <Typography color='green'>{success}</Typography>
             </Grid>  
 
             <TextField id='tf1' className='req' value={cred.user} onChange={(e)=>{setCred({...cred,user:e.target.value})}} size='small' label='Username' variant='outlined'

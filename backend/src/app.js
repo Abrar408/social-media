@@ -24,14 +24,16 @@ app.get('/',(req,res)=>{
 })
 app.post('/regUser',(req,res)=>{
     
-    db.collection('users').findOne(req.body,(err,result)=>{
+    const{email} = req.body
+    // console.log(email)
+    db.collection('users').findOne({email},(err,result)=>{
         if (err) throw err
         if(result){
             res.status(400).send("email is already registered")            
         }
         else{
             db.collection('users').insertOne(req.body,(err,result)=>{
-                
+            res.status(200).send("Registration Successful");   
             })
         }
     })
