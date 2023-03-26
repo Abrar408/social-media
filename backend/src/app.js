@@ -21,13 +21,27 @@ app.use(cors({
 app.use(express.json());
 
 app.post('/userList',async (req,res)=>{
-    const {input} = req.body
-
+    const {input,userid} = req.body
     const regex = new RegExp(`${input}`,"i")
-    var cursor = db.collection('user').find({user:regex})
     let users = []
-    await cursor.forEach((user) => {
-        users.push(user)
+    let currUser = []
+    await db.collection('user').findOne({_id: new ObjectId(userid)},(err,result)=>{
+        if(err) throw err
+        if(result){
+            currUser = result.following
+        }
+    })
+    
+    var cursor = db.collection('user').find({user:regex})
+    
+    await cursor.forEach( (user) => {
+        if(currUser.includes(user._id)){
+            users.push({user,b:true})
+        }
+        else{
+            users.push({user,b:false})
+        }
+        
     })
     
     res.status(200).send(users)
@@ -133,6 +147,7 @@ app.post('/getFollowing',(req,res)=>{
     })
     // res.status(200).send("rec")
 })
+
 app.listen(PORT,()=>{
     console.log(`server up on ${PORT}`)
 })

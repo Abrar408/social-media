@@ -1,10 +1,17 @@
 import { Card, Paper, Typography } from '@mui/material'
-import React, { useContext } from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect } from 'react'
 import { CurrUser } from '../App';
 
-const UserDetail = () => {
+const UserDetail = ({rerender}) => {
   let currUser = useContext(CurrUser);
-  // console.log(currUser)
+  async function getUpdatedBio(){
+    await axios.post()
+    return;
+  }
+  useEffect(() => {
+    getUpdatedBio()
+  },[rerender])
   return (
     <>
       <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#fff'}}>

@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrUser } from '../App'
 
-const Following = () => { 
+const Following = ({rerender}) => { 
   const currUser = useContext(CurrUser)
   const [followingList,setFollowingList] = useState([])
   async function getFollowing(){
@@ -20,7 +20,7 @@ const Following = () => {
   
   useEffect(()=>{
     getFollowing()
-  },[])
+  },[rerender])
   return (
     <>
       <Card sx={{width:'300px',backgroundColor:'#fff',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>

@@ -55,21 +55,21 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchAppBar() {
+export default function SearchAppBar({rerender,setRerender}) {
   let currUser = React.useContext(CurrUser);
   const [input,setInput] = React.useState('')
   const [userList,setUserList] = React.useState([])
-  console.log(input)
+  // console.log(input)
 
   React.useEffect(()=>{
     async function myFunc(){
       if(input){
-      await axios.post('http://127.0.0.1:3000/userList',{input})
+      await axios.post('http://127.0.0.1:3000/userList',{input,userid:currUser._id})
           .then(res => {
             // console.log(res.status)
             if(res.status == 200){
               console.log(res.data)
-              setUserList(res.data)
+              // setUserList(res.data)
             }
           })
           .catch(err => console.log(err))
@@ -87,6 +87,11 @@ export default function SearchAppBar() {
     .then(res => {
       if(res.status == 200){
         console.log(res.data)
+        if(rerender){
+          setRerender(false)
+        }else{
+          setRerender(true)
+        }
       }
     })
     .catch(err => console.log(err))
