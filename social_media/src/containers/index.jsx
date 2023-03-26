@@ -41,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
+export default function BasicTabs(props) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -63,7 +63,7 @@ export default function BasicTabs() {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <Login />
+            <Login setAuth={props.setAuth} setCurrUser={props.setCurrUser}/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Register />

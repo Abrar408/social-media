@@ -1,13 +1,18 @@
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axios from 'axios'
-const Login = () => {
+import {CurrUser} from '../App'
+
+const Login = ({setAuth,setCurrUser}) => {
+    let currUser = useContext(CurrUser)
+
     const [cred,setCred] = useState({
         email:'',
         pass:''
     })
     const [err,setErr] = useState('')
+
     const checkIfEmpty =()=>{
         if(cred.email == '' || cred.pass == ''){
             setErr('required fields cannot be blank');
@@ -28,26 +33,21 @@ const Login = () => {
             return false
         }            
     }
-    const loginUser = () => {
+    const loginUser = async () => {
         if(checkIfEmpty()){
             if(checkEmail()){
-                axios.post('http://localhost:3000/loginUser',cred)
-                .then(res => {
+                 await axios.post('http://localhost:3000/loginUser',cred)
+                .then(res =>{
                     if(res.status == 200){
-                        console.log(res.data)
-                        // setSuccess(res.data)
-                        // setCred({...cred,
-                        //     user:'',
-                        //     email:'',
-                        //     pass:'',
-                        //     confirmPass:''})
-                        // setCheckBox(false)
+                        setCurrUser(res.data)
+                        console.log(currUser)
+                        setAuth(true)
                     }
                 })
                 .catch(err => {
                     setErr(err.response.data)
-                    console.log(err.response.data)
-                })
+                })          
+                
             }
         }
     }

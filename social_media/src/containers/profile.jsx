@@ -8,14 +8,14 @@ const Profile = () => {
   return (
     <>
     <PrimarySearchAppBar/>
-    <div style={{display:'flex'}}>
-        <div>
+    <div style={{display:'flex',height:'80vh',backgroundColor:'lightgray',margin:'10px 0px',padding:'10px'}}>
+        <div style={{display:'flex',flex:'2',justifyContent:'center',alignItems:'center'}}>
             <UserDetail/>
         </div>
-        <div>
+        <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
             <Followers/>
         </div>
-        <div>
+        <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
             <Following/>
         </div>
     </div>

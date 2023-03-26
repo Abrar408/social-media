@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const path = require('path');
 const cors = require('cors')
 const mongoose = require('mongoose')
+// const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 3000
 require('./db/conn')
 // const User = require('./models/userSchema')
@@ -16,9 +17,44 @@ app.use(cors({
     origin: '*'
 }))
 app.use(express.json());
+// app.use(cookieParser())
 
-app.get('/',(req,res)=>{
-    res.send("hello")
+app.post('/userList',async (req,res)=>{
+    const {input} = req.body
+
+    // console.log("1")
+    console.log(input)
+    const regex = new RegExp(`${input}`,"i")
+var cursor = db.collection('user').find({user:regex})
+    let users = []
+    await cursor.forEach((user) => {
+        users.push(user)
+    })
+    // let newUser = users.filter(user => user.)
+    // console.log(users)
+    res.status(200).send(users)
+    // res.status(200).send("ok")
+    // db.collection('user').find({}).toArray((err,result)=>{
+    //     if(err) throw err
+    //     if(result.length > 0){
+    //         // console.log("ok") 
+    //         // console.log(res)
+    //         res.status(200).json(result)
+    //     }
+    //     else{
+    //         res.status(404).send('User not found')
+    //     }
+    // })
+    // console.log("2")
+    //     (err,res)=>{
+    //     if (err) throw err
+    //     if(res){
+    //         console.log("2")
+    //         console.log(res)
+    //         // res.json(users)
+    //     }
+    // }
+    // ).pretty()
 })
 app.post('/regUser',(req,res)=>{
     
@@ -68,9 +104,16 @@ app.post('/loginUser',(req,res)=>{
             console.log(result)
             const myFunc = async () =>{
                 const isMatch = await bcrypt.compare(pass,result.pass)
-                const token = jwt.sign({_id:result._id},"secret")
+                
                 if(isMatch){
-                    res.status(200).send("success")
+                    
+                    res.status(200).json(result)
+                    // const accessToken = jwt.sign({"email":result.email},"secret",{expiresIn:'1h'})
+                    // const refreshToken = jwt.sign({"email":result.email},"secret",{expiresIn:'1d'})
+                    // db.collection('user').updateOne({email:result.email},{$set:{refreshToken}},{upsert:true})
+                    // res.cookie('jwt',refreshToken,{httpOnly:true,maxAge:24*60*60*1000})
+                    // res.json({accessToken,result})
+                    // res.status(200).send("success")
                 }
                 else{
                     res.status(400).send("Email or password is incorrect")
@@ -89,6 +132,9 @@ app.post('/loginUser',(req,res)=>{
     })
     
 })
+// app.post('/followerList',(req,res)=>{
+
+// })
 app.listen(PORT,()=>{
     console.log(`server up on ${PORT}`)
 })
