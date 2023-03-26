@@ -4,18 +4,18 @@ import { CurrUser } from '../App';
 
 const UserDetail = () => {
   let currUser = useContext(CurrUser);
-  console.log(currUser)
+  // console.log(currUser)
   return (
     <>
-      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#d5d8e6'}}>
-        <Paper elevation='10' sx={{width:'300px',height:'300px',backgroundColor:'#4ced5f'}}>
+      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#fff'}}>
+        <Paper sx={{width:'300px',height:'300px',backgroundColor:'#4ced5f'}}>
         </Paper>
-        <Typography>{currUser.user}</Typography>
-        <Typography>{currUser.email}</Typography>
-        <Typography>{currUser.gender}</Typography>
-        <Typography>active since</Typography>
-        <Typography>followers</Typography>
-        <Typography>following</Typography>
+        <Typography >{`Username: ${currUser.user}`}</Typography>
+        <Typography >{`Email: ${currUser.email}`}</Typography>
+        <Typography >{`Gender: ${currUser.gender}`}</Typography>
+        <Typography >{`Joined: ${currUser.joined}`}</Typography>
+        <Typography >{`Followers:`}</Typography>
+        <Typography >{`Following: ${currUser.following.length}`}</Typography>
       </Card>
     </>
   )

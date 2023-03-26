@@ -7,7 +7,7 @@ import Profile from './containers/profile'
 let CurrUser = createContext();
 
 function App() {
-  const [auth, setAuth] = useState(true)
+  const [auth, setAuth] = useState(false)
   const [currUser, setCurrUser] = useState('')
 
   return (

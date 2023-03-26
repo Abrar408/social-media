@@ -3,7 +3,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const path = require('path');
 const cors = require('cors')
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { json } = require('express');
+const {ObjectId} = require('bson');
 // const cookieParser = require('cookie-parser')
 const PORT = process.env.PORT || 3000
 require('./db/conn')
@@ -17,62 +19,24 @@ app.use(cors({
     origin: '*'
 }))
 app.use(express.json());
-// app.use(cookieParser())
 
 app.post('/userList',async (req,res)=>{
     const {input} = req.body
 
-    // console.log("1")
-    console.log(input)
     const regex = new RegExp(`${input}`,"i")
-var cursor = db.collection('user').find({user:regex})
+    var cursor = db.collection('user').find({user:regex})
     let users = []
     await cursor.forEach((user) => {
         users.push(user)
     })
-    // let newUser = users.filter(user => user.)
-    // console.log(users)
+    
     res.status(200).send(users)
-    // res.status(200).send("ok")
-    // db.collection('user').find({}).toArray((err,result)=>{
-    //     if(err) throw err
-    //     if(result.length > 0){
-    //         // console.log("ok") 
-    //         // console.log(res)
-    //         res.status(200).json(result)
-    //     }
-    //     else{
-    //         res.status(404).send('User not found')
-    //     }
-    // })
-    // console.log("2")
-    //     (err,res)=>{
-    //     if (err) throw err
-    //     if(res){
-    //         console.log("2")
-    //         console.log(res)
-    //         // res.json(users)
-    //     }
-    // }
-    // ).pretty()
+    
 })
 app.post('/regUser',(req,res)=>{
     
     let {user,email,gender,pass} = req.body
-    // console.log(email)
-    // User.findOne({email})
-    // .then(result =>{
-    //     if(result){
-    //         return res.status(400).send("email already exists")
-    //     }
-    //     else{
-    //         const user = new User({user,email,gender,pass});
-    //         user.save().then(() =>{
-    //             res.status(200).send("user created")
-    //         })
-    //     }
-        
-    // })
+    
     db.collection('user').findOne({email},(err,result)=>{
         if (err) throw err
         if(result){
@@ -80,12 +44,12 @@ app.post('/regUser',(req,res)=>{
         }
         else{
             myFunc = async () => {
-                console.log("1")
-                const salt = await bcrypt.genSalt(10);
-                console.log("2")
+                const joined = await (new Date()).toLocaleDateString()
+                const following = []
+                const salt = await bcrypt.genSalt(10);                
                 pass= await bcrypt.hash(pass,salt)
-                console.log(pass)
-                db.collection('user').insertOne({user,email,gender,pass},(err,result)=>{
+                
+                db.collection('user').insertOne({user,email,gender,pass,joined,following},(err,result)=>{
                 res.status(200).send("Registration Successful");   
             })
             }
@@ -101,7 +65,7 @@ app.post('/loginUser',(req,res)=>{
     db.collection('user').findOne({email},(err,result)=>{
         if (err) throw err
         if(result){
-            console.log(result)
+            // console.log(result)
             const myFunc = async () =>{
                 const isMatch = await bcrypt.compare(pass,result.pass)
                 
@@ -132,9 +96,43 @@ app.post('/loginUser',(req,res)=>{
     })
     
 })
-// app.post('/followerList',(req,res)=>{
-
-// })
+app.post('/addFollowing',(req,res)=>{
+    const {userid,currUser} = req.body
+    console.log(userid,currUser)
+    db.collection('user').updateOne({email:`${currUser}`},{$push:{following:`${userid}`}})
+    res.status(200).send("added")
+})
+app.post('/getFollowing',(req,res)=>{
+    const {currUser} = req.body
+    console.log(currUser)
+    let folList = []
+    db.collection('user').findOne({email:`${currUser}`},(err,result)=>{
+        if(err) throw err
+        if(result){
+            console.log(result.following)
+            result.following.forEach(async (fol)=>{
+                await db.collection('user').findOne({_id:new ObjectId(fol)},(err,result)=>{
+                    folList.push(result)
+                    console.log(result)
+                })    
+                console.log(fol)  
+                if(result.following.length == folList.length){
+                    res.status(200).send(folList)
+                }          
+            }
+            ) 
+            console.log("1")
+            // if(result.following.length == folList.length){
+            //     res.status(200).send(folList)
+            // }
+            
+        }
+        else{
+            res.status(400).send("db error")
+        }
+    })
+    // res.status(200).send("rec")
+})
 app.listen(PORT,()=>{
     console.log(`server up on ${PORT}`)
 })

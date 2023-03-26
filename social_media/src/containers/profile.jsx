@@ -7,8 +7,9 @@ import UserDetail from '../components/userDetail'
 const Profile = () => {
   return (
     <>
+    <div style={{backgroundColor:'#cccccc'}}>
     <PrimarySearchAppBar/>
-    <div style={{display:'flex',height:'80vh',margin:'10px 0px',padding:'10px'}}>
+    <div style={{display:'flex',height:'100%',margin:'10px 0px',padding:'10px'}}>
         <div style={{display:'flex',flex:'2',justifyContent:'center',alignItems:'center'}}>
             <UserDetail/>
         </div>
@@ -18,6 +19,7 @@ const Profile = () => {
         <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
             <Following/>
         </div>
+    </div>
     </div>
     </>
   )

@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Button, Card, Paper } from '@mui/material';
 import axios from 'axios';
 import { Stack } from '@mui/system';
+import { CurrUser } from '../App';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,6 +56,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar() {
+  let currUser = React.useContext(CurrUser);
   const [input,setInput] = React.useState('')
   const [userList,setUserList] = React.useState([])
   console.log(input)
@@ -76,51 +78,32 @@ export default function SearchAppBar() {
         }
     }
     myFunc()
+    return ()=>{}
   },[input])
 
-  // async function handleInput(e){
-  //   e.preventDefault();
-  //   // console.log(e.target.value)
-  //   setInput(e.target.value)
-  //   // console.log(input)
-  //   if(!input){
-  //     // console.log(input)
-  //         await axios.post('http://127.0.0.1:3000/userList',{input})
-  //         .then(res => {
-  //           // console.log(res.status)
-  //           if(res.status == 200){
-  //             console.log(res.data)
-  //             setUserList(res.data)
-  //           }
-  //         })
-  //         .catch(err => console.log(err))
-  //       }
-  //       else{
-  //         setUserList([])
-  //       }
-  // }
-      
+  const addFollowing = async (user) => {
+    console.log(user.user._id)
+    await axios.post('http://127.0.0.1:3000/addFollowing',{userid: user.user._id,currUser:currUser.email})
+    .then(res => {
+      if(res.status == 200){
+        console.log(res.data)
+      }
+    })
+    .catch(err => console.log(err))
+  }
+        
   return (
     <>
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar position="static" sx={{backgroundColor:'#1e211f'}}>
         <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
-          {/* <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
+          
           <Typography
             variant="h6"
             noWrap
-            component="div"
-            // sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            component="div"            
           >
-            User
+            {currUser.user}
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -147,7 +130,7 @@ export default function SearchAppBar() {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.email}</Typography>
               </Stack>
               <Stack>
-                  <Button variant='contained'> Follow</Button>
+                  <Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button>
               </Stack>
             </Paper>
           </>

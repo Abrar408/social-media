@@ -11,8 +11,8 @@ const Followers = () => {
   },[])
   return (
     <>
-      <Card sx={{backgroundColor:'red',padding:'10px'}}>
-        <Typography>Followers</Typography>
+      <Card sx={{backgroundColor:'#fff',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
+        <Typography sx={{fontWeight:'bold',fontSize:'18px'}}>Followers</Typography>
         <Paper sx={{width:'300px',backgroundColor:'pink',display:'flex',alignItems:'center',padding:'5px'}}>
           <div style={{flex:'1'}}>
             <Typography>Username</Typography>
