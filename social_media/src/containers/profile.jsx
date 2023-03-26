@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <>
     <PrimarySearchAppBar/>
-    <div style={{display:'flex',height:'80vh',backgroundColor:'lightgray',margin:'10px 0px',padding:'10px'}}>
+    <div style={{display:'flex',height:'80vh',margin:'10px 0px',padding:'10px'}}>
         <div style={{display:'flex',flex:'2',justifyContent:'center',alignItems:'center'}}>
             <UserDetail/>
         </div>

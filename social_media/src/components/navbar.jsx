@@ -8,8 +8,9 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button } from '@mui/material';
+import { Button, Card, Paper } from '@mui/material';
 import axios from 'axios';
+import { Stack } from '@mui/system';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -102,7 +103,7 @@ export default function SearchAppBar() {
   return (
     <>
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{backgroundColor:'#1e211f'}}>
         <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
           {/* <IconButton
             size="large"
@@ -136,11 +137,23 @@ export default function SearchAppBar() {
         </Toolbar>
       </AppBar>
     </Box>
-    <Box sx={{position:'absolute', width:'400px',backgroundColor:'gray',left:'50%',transform:'translateX(-50%)',zIndex:"1"}}>
+    <Card sx={{position:'absolute', width:'300px',left:'50%',transform:'translateX(-50%)',zIndex:"1"}}>
       {userList.map((user)=>{
-        return <div>{user.user}</div>
+        return (
+          <>
+            <Paper elevation='5' sx={{display:'flex',m:'1px 0px',p:'5px',alignItems:'center'}}>
+              <Stack sx={{flex:'1'}}>
+                  <Typography sx={{fontWeight:'bold'}}>{user.user}</Typography>
+                  <Typography sx={{fontSize:'15px',color:'gray'}}>{user.email}</Typography>
+              </Stack>
+              <Stack>
+                  <Button variant='contained'> Follow</Button>
+              </Stack>
+            </Paper>
+          </>
+        )
       })}
-      </Box>
+      </Card>
     </>
   );
 }

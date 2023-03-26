@@ -7,8 +7,8 @@ const UserDetail = () => {
   console.log(currUser)
   return (
     <>
-      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'blue'}}>
-        <Paper sx={{width:'300px',height:'300px',backgroundColor:'green'}}>
+      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#d5d8e6'}}>
+        <Paper elevation='10' sx={{width:'300px',height:'300px',backgroundColor:'#4ced5f'}}>
         </Paper>
         <Typography>{currUser.user}</Typography>
         <Typography>{currUser.email}</Typography>
