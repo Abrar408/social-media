@@ -1,4 +1,5 @@
 import { Button, Card, Paper, Typography } from '@mui/material'
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrUser } from '../App'
@@ -65,7 +66,7 @@ const Following = ({rerender,setRerender}) => {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{fol.email}</Typography>
                 </div>
                 <div>
-                  <Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{remFollowing({fol})}}>Un Follow</Button>
+                  <Button variant='contained' startIcon={<RemoveCircleRoundedIcon/>} sx={{backgroundColor:'#537FE7'}} onClick={()=>{remFollowing({fol})}}>Unfollow</Button>
                 </div>
               </Paper>
             )

@@ -10,9 +10,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, Card, Paper } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import axios from 'axios';
 import { Stack } from '@mui/system';
 import { CurrUser } from '../App';
+import AddCircleOutlineOutlined from '@mui/icons-material/AddCircleOutlineOutlined';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -50,7 +52,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
       width: '250px',
       '&:focus': {
-        width: '300px',
+        width: '280px',
       },
     },
   },
@@ -142,8 +144,8 @@ export default function SearchAppBar({rerender,setRerender}) {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%',boder:'3px solid green',outline:'3px solid green'}}/></IconButton> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{addFollowing({user})}}>Follow</Button> }
-                
+                {user.b ? <Button variant='outlined'>following</Button> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} startIcon={<AddCircleRoundedIcon/>} onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                {/* <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%',boder:'3px solid green',outline:'3px solid green'}}/></IconButton> */}
               </Stack>
             </Paper>
           </>
