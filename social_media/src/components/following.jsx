@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrUser } from '../App'
 
-const Following = ({rerender}) => { 
+const Following = ({rerender,setRerender}) => { 
   const currUser = useContext(CurrUser)
   const [followingList,setFollowingList] = useState([])
   async function getFollowing(){
@@ -17,10 +17,26 @@ const Following = ({rerender}) => {
     .catch(err => console.error(err))
     return;
   }
-  
+  const remFollowing = async (user) => {
+    console.log(user.fol._id)
+    await axios.post('http://127.0.0.1:3000/remFollowing',{userid: user.fol._id,currUser:currUser.email})
+    .then(res => {
+      if(res.status == 200){
+        console.log(res.data)
+        if(rerender){
+          setRerender(false)
+        }else{
+          setRerender(true)
+        }
+      }
+    })
+    .catch(err => console.log(err))
+  }
   useEffect(()=>{
-    getFollowing()
+    getFollowing();
+    return;
   },[rerender])
+  
   return (
     <>
       <Card sx={{width:'300px',backgroundColor:'#fff',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
@@ -34,7 +50,7 @@ const Following = ({rerender}) => {
                   <Typography>{fol.email}</Typography>
                 </div>
                 <div>
-                  <Button variant='contained'>Un Follow</Button>
+                  <Button variant='contained' onClick={()=>{remFollowing({fol})}}>Un Follow</Button>
                 </div>
               </Paper>
             )

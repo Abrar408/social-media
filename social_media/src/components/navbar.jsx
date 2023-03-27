@@ -9,6 +9,7 @@ import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, Card, Paper } from '@mui/material';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import axios from 'axios';
 import { Stack } from '@mui/system';
 import { CurrUser } from '../App';
@@ -60,30 +61,31 @@ export default function SearchAppBar({rerender,setRerender}) {
   const [input,setInput] = React.useState('')
   const [userList,setUserList] = React.useState([])
   // console.log(input)
+  async function myFunc(){
+    if(input){
+    await axios.post('http://127.0.0.1:3000/userList',{input,userid:currUser._id})
+        .then(async res => {
+          // console.log(res.status)
+          if(res.status == 200){
+            console.log("1")
+            console.log(res.data)
+            console.log("2")
+            await setUserList(res.data)
+            console.log("3")
+            console.log(userList)
+            console.log("4")
+          }
+        })
+        .catch(err => console.log(err))
+      }else{
+        setUserList([])
+      }
+  }
 
   React.useEffect(()=>{
-    async function myFunc(){
-      if(input){
-      await axios.post('http://127.0.0.1:3000/userList',{input,userid:currUser._id})
-          .then(async res => {
-            // console.log(res.status)
-            if(res.status == 200){
-              console.log("1")
-              console.log(res.data)
-              console.log("2")
-              await setUserList(res.data)
-              console.log("3")
-              console.log(userList)
-              console.log("4")
-            }
-          })
-          .catch(err => console.log(err))
-        }else{
-          setUserList([])
-        }
-    }
+    
     myFunc()
-    return ()=>{}
+    return;
   },[input,rerender])
 
   const addFollowing = async (user) => {
@@ -140,7 +142,7 @@ export default function SearchAppBar({rerender,setRerender}) {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <Button variant='contained' disabled>Following</Button> :<Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%'}}/></IconButton> :<Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button> }
                 
               </Stack>
             </Paper>

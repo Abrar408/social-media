@@ -19,7 +19,7 @@ const Profile = () => {
             <Followers rerender={rerender}/>
         </div>
         <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
-            <Following rerender={rerender}/>
+            <Following rerender={rerender} setRerender={setRerender}/>
         </div>
     </div>
     </div>

@@ -36,12 +36,15 @@ app.post('/userList',async (req,res)=>{
     
     await cursor.forEach( (user) => {
         // console.log(user._id.toString())
-        if(currUser.includes(user._id.toString())){
-            users.push({user,b:true})
+        if(user._id.toString() != userid){
+            if(currUser.includes(user._id.toString())){
+                users.push({user,b:true})
+            }
+            else{
+                users.push({user,b:false})
+            }
         }
-        else{
-            users.push({user,b:false})
-        }
+        
         
     })
     
@@ -148,7 +151,12 @@ app.post('/getFollowing',(req,res)=>{
     })
     // res.status(200).send("rec")
 })
-
+app.post('/remFollowing',(req,res)=>{
+    const {userid,currUser} = req.body
+    console.log(userid,currUser)
+    db.collection('user').updateOne({email:`${currUser}`},{$pull:{following:`${userid}`}})
+    res.status(200).send("removed")
+})
 app.listen(PORT,()=>{
     console.log(`server up on ${PORT}`)
 })
