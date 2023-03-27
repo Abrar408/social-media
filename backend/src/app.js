@@ -35,7 +35,8 @@ app.post('/userList',async (req,res)=>{
     var cursor = db.collection('user').find({user:regex})
     
     await cursor.forEach( (user) => {
-        if(currUser.includes(user._id)){
+        // console.log(user._id.toString())
+        if(currUser.includes(user._id.toString())){
             users.push({user,b:true})
         }
         else{

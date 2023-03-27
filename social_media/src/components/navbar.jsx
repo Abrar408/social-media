@@ -65,11 +65,16 @@ export default function SearchAppBar({rerender,setRerender}) {
     async function myFunc(){
       if(input){
       await axios.post('http://127.0.0.1:3000/userList',{input,userid:currUser._id})
-          .then(res => {
+          .then(async res => {
             // console.log(res.status)
             if(res.status == 200){
+              console.log("1")
               console.log(res.data)
-              // setUserList(res.data)
+              console.log("2")
+              await setUserList(res.data)
+              console.log("3")
+              console.log(userList)
+              console.log("4")
             }
           })
           .catch(err => console.log(err))
@@ -79,11 +84,11 @@ export default function SearchAppBar({rerender,setRerender}) {
     }
     myFunc()
     return ()=>{}
-  },[input])
+  },[input,rerender])
 
   const addFollowing = async (user) => {
-    console.log(user.user._id)
-    await axios.post('http://127.0.0.1:3000/addFollowing',{userid: user.user._id,currUser:currUser.email})
+    console.log(user.user.user._id)
+    await axios.post('http://127.0.0.1:3000/addFollowing',{userid: user.user.user._id,currUser:currUser.email})
     .then(res => {
       if(res.status == 200){
         console.log(res.data)
@@ -131,11 +136,12 @@ export default function SearchAppBar({rerender,setRerender}) {
           <>
             <Paper elevation='5' sx={{display:'flex',m:'1px 0px',p:'5px',alignItems:'center'}}>
               <Stack sx={{flex:'1'}}>
-                  <Typography sx={{fontWeight:'bold'}}>{user.user}</Typography>
-                  <Typography sx={{fontSize:'15px',color:'gray'}}>{user.email}</Typography>
+                  <Typography sx={{fontWeight:'bold'}}>{user.user.user}</Typography>
+                  <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                  <Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button>
+                {user.b ? <Button variant='contained' disabled>Following</Button> :<Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                
               </Stack>
             </Paper>
           </>
