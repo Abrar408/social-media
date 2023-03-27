@@ -168,6 +168,19 @@ app.post('/remFollowing',(req,res)=>{
     db.collection('user').updateOne({email:`${currUser}`},{$pull:{following:`${userid}`}})
     res.status(200).send("removed")
 })
+app.post('/getFollowers',async (req,res)=>{
+    const {currUser} = req.body
+    let users = []
+    var cursor = db.collection('user').find({})
+    await cursor.forEach( (user) => {
+        // console.log(user._id.toString())
+        if(user.following.includes(currUser)){
+            users.push({user})
+            
+        }
+    })
+
+})
 app.listen(PORT,()=>{
     console.log(`server up on ${PORT}`)
 })

@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Button, Card, Paper } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import axios from 'axios';
 import { Stack } from '@mui/system';
 import { CurrUser } from '../App';
@@ -115,11 +116,12 @@ export default function SearchAppBar({rerender,setRerender}) {
           <Typography
             variant="h6"
             noWrap
-            component="div"            
+            component="div" 
+            sx={{textTransform:'uppercase'}}           
           >
             {currUser.user}
           </Typography>
-          <Search>
+          <Search sx={{borderBottom:'3px solid #03DAC6'}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -130,11 +132,11 @@ export default function SearchAppBar({rerender,setRerender}) {
               onChange={(e)=>{setInput(e.target.value)}}
             />
           </Search>
-          <Button variant="contained">Logout</Button>
+          <Button variant="contained" endIcon={<LockRoundedIcon/>} sx={{textTransform:'none',backgroundColor:'#03DAC6',color:'black',fontWeight:'bold',':hover':{backgroundColor:'#11bfaf'}}}>Log Out</Button>
         </Toolbar>
       </AppBar>
     </Box>
-    <Card sx={{position:'absolute', width:'300px',left:'50%',transform:'translateX(-50%)',zIndex:"1",backgroundColor:'#242526'}}>
+    <Card sx={{position:'absolute', width:'300px',left:'50%',transform:'translateX(-50%)',zIndex:"1",backgroundColor:'#242526',ml:'-25px',mt:'-10px'}}>
       {userList.map((user)=>{
         return (
           <>
@@ -144,7 +146,7 @@ export default function SearchAppBar({rerender,setRerender}) {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <Button variant='outlined'>following</Button> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} startIcon={<AddCircleRoundedIcon/>} onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                {user.b ? <Button variant='outlined' sx={{textTransform:'none'}}>following</Button> :<Button variant='contained' sx={{backgroundColor:'#537FE7',textTransform:'none'}} startIcon={<AddCircleRoundedIcon/>} onClick={()=>{addFollowing({user})}}>Follow</Button> }
                 {/* <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%',boder:'3px solid green',outline:'3px solid green'}}/></IconButton> */}
               </Stack>
             </Paper>

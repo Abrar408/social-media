@@ -1,6 +1,7 @@
 import { Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from '@mui/material'
 import React, { useContext, useState } from 'react'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import axios from 'axios'
 import {CurrUser} from '../App'
 
@@ -65,7 +66,7 @@ const Login = ({setAuth,setCurrUser}) => {
             placeholder='Enter Password' type='password' required sx={{width:'100%',m:'10px 0px'}} />  
             <Typography color='red'>{err}</Typography>
             <FormControlLabel control={<Checkbox />} label="Remember Me" />  
-            <Button variant='contained' type='submit' fullWidth onClick={loginUser} >Login</Button>    
+            <Button endIcon={<ArrowForwardRoundedIcon/>} variant='contained' type='submit' fullWidth onClick={loginUser} >Login</Button>    
             <Typography sx={{m:'20px 0px 10px 0px'}}>
                 <Link>
                     Forgot Password?

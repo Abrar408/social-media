@@ -2,6 +2,7 @@ import { Card, Paper, Typography } from '@mui/material'
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrUser } from '../App';
+import avatar from '../assets/avatar.jpg'
 
 const UserDetail = ({rerender}) => {
   let currUser = useContext(CurrUser);
@@ -22,8 +23,9 @@ const UserDetail = ({rerender}) => {
   },[rerender])
   return (
     <>
-      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#242526'}}>
-        <Paper sx={{width:'300px',height:'300px',backgroundColor:'#3A3B3C'}}>
+      <Card sx={{width:'300px',padding:'10px',backgroundColor:'#242526'}}>
+        <Paper sx={{width:'300px',height:'300px',backgroundColor:'#03DAC6',mb:'10px'}}>
+        <img src={avatar} alt="avatar" width='300px' height='300px' />
         </Paper>
         <div style={{display:'flex'}}>
           <Typography sx={{flex:'1', color:'gray'}}>{`Username:`}</Typography>
