@@ -142,7 +142,7 @@ export default function SearchAppBar({rerender,setRerender}) {
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%'}}/></IconButton> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%',boder:'3px solid green',outline:'3px solid green'}}/></IconButton> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{addFollowing({user})}}>Follow</Button> }
                 
               </Stack>
             </Paper>
