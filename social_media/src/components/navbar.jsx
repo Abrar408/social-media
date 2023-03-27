@@ -48,9 +48,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
+      width: '250px',
       '&:focus': {
-        width: '20ch',
+        width: '300px',
       },
     },
   },
@@ -67,13 +67,13 @@ export default function SearchAppBar({rerender,setRerender}) {
         .then(async res => {
           // console.log(res.status)
           if(res.status == 200){
-            console.log("1")
-            console.log(res.data)
-            console.log("2")
+            // console.log("1")
+            // console.log(res.data)
+            // console.log("2")
             await setUserList(res.data)
-            console.log("3")
-            console.log(userList)
-            console.log("4")
+            // console.log("3")
+            // console.log(userList)
+            // console.log("4")
           }
         })
         .catch(err => console.log(err))
@@ -107,7 +107,7 @@ export default function SearchAppBar({rerender,setRerender}) {
   return (
     <>
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" sx={{backgroundColor:'#1e211f'}}>
+      <AppBar position="static" sx={{backgroundColor:'#242526'}}>
         <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
           
           <Typography
@@ -132,17 +132,17 @@ export default function SearchAppBar({rerender,setRerender}) {
         </Toolbar>
       </AppBar>
     </Box>
-    <Card sx={{position:'absolute', width:'300px',left:'50%',transform:'translateX(-50%)',zIndex:"1"}}>
+    <Card sx={{position:'absolute', width:'300px',left:'50%',transform:'translateX(-50%)',zIndex:"1",backgroundColor:'#242526'}}>
       {userList.map((user)=>{
         return (
           <>
-            <Paper elevation='5' sx={{display:'flex',m:'1px 0px',p:'5px',alignItems:'center'}}>
+            <Paper elevation='0' sx={{display:'flex',p:'5px',alignItems:'center',border:'none',backgroundColor:'#3A3B3C',borderRadius:'0px'}}>
               <Stack sx={{flex:'1'}}>
-                  <Typography sx={{fontWeight:'bold'}}>{user.user.user}</Typography>
+                  <Typography sx={{fontWeight:'bold',color:'white'}}>{user.user.user}</Typography>
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.user.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%'}}/></IconButton> :<Button variant='contained' onClick={()=>{addFollowing({user})}}>Follow</Button> }
+                {user.b ? <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%'}}/></IconButton> :<Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{addFollowing({user})}}>Follow</Button> }
                 
               </Stack>
             </Paper>

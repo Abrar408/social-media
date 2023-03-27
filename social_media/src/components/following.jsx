@@ -6,12 +6,18 @@ import { CurrUser } from '../App'
 const Following = ({rerender,setRerender}) => { 
   const currUser = useContext(CurrUser)
   const [followingList,setFollowingList] = useState([])
+
   async function getFollowing(){
+    console.log("1")
+    console.log(followingList)
+    console.log("3")
     await axios.post('http://127.0.0.1:3000/getFollowing',{currUser:currUser.email})
     .then(res => {
       if(res.status == 200){
         setFollowingList(res.data)
+        console.log("2")
         console.log(followingList)
+        console.log("4")
       }
     })
     .catch(err => console.error(err))
@@ -39,18 +45,27 @@ const Following = ({rerender,setRerender}) => {
   
   return (
     <>
-      <Card sx={{width:'300px',backgroundColor:'#fff',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
-        <Typography sx={{fontWeight:'bold',fontSize:'18px'}}>Following</Typography>
+      <Card sx={{height:'450px',width:'300px',backgroundColor:'#242526',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
+        <Typography sx={{fontWeight:'bold',fontSize:'18px',color:'white'}}>Following</Typography>
+        {/* <Paper sx={{width:'300px',backgroundColor:'#F3EFE0',display:'flex',alignItems:'center',padding:'5px'}}>
+                <div style={{flex:'1'}}>
+                  <Typography sx={{fontWeight:'bold'}}>Username</Typography>
+                  <Typography sx={{fontSize:'15px',color:'gray'}}>Email</Typography>
+                </div>
+                <div>
+                  <Button variant='contained' sx={{backgroundColor:'#537FE7'}}>Un Follow</Button>
+                </div>
+              </Paper> */}
           {followingList.map((fol)=>{
             // console.log(fol)
             return(
-              <Paper sx={{width:'300px',backgroundColor:'orange',display:'flex',alignItems:'center',padding:'5px'}}>
+              <Paper sx={{width:'300px',backgroundColor:'#3A3B3C',display:'flex',alignItems:'center',padding:'5px', mb:'5px'}}>
                 <div style={{flex:'1'}}>
-                  <Typography>{fol.user}</Typography>
-                  <Typography>{fol.email}</Typography>
+                  <Typography sx={{fontWeight:'bold',color:'white'}}>{fol.user}</Typography>
+                  <Typography sx={{fontSize:'15px',color:'gray'}}>{fol.email}</Typography>
                 </div>
                 <div>
-                  <Button variant='contained' onClick={()=>{remFollowing({fol})}}>Un Follow</Button>
+                  <Button variant='contained' sx={{backgroundColor:'#537FE7'}} onClick={()=>{remFollowing({fol})}}>Un Follow</Button>
                 </div>
               </Paper>
             )

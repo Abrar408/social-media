@@ -14,15 +14,15 @@ const UserDetail = ({rerender}) => {
   },[rerender])
   return (
     <>
-      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#fff'}}>
-        <Paper sx={{width:'300px',height:'300px',backgroundColor:'#4ced5f'}}>
+      <Card sx={{width:'300px', height:'450px',padding:'10px',backgroundColor:'#242526'}}>
+        <Paper sx={{width:'300px',height:'300px',backgroundColor:'#E9F8F9'}}>
         </Paper>
-        <Typography >{`Username: ${currUser.user}`}</Typography>
-        <Typography >{`Email: ${currUser.email}`}</Typography>
-        <Typography >{`Gender: ${currUser.gender}`}</Typography>
-        <Typography >{`Joined: ${currUser.joined}`}</Typography>
-        <Typography >{`Followers:`}</Typography>
-        <Typography >{`Following: ${currUser.following.length}`}</Typography>
+        <Typography sx={{color:'white'}}>{`Username: ${currUser.user}`}</Typography>
+        <Typography sx={{color:'white'}}>{`Email: ${currUser.email}`}</Typography>
+        <Typography sx={{color:'white'}}>{`Gender: ${currUser.gender}`}</Typography>
+        <Typography sx={{color:'white'}}>{`Joined: ${currUser.joined}`}</Typography>
+        <Typography sx={{color:'white'}}>{`Followers:`}</Typography>
+        <Typography sx={{color:'white'}}>{`Following: ${currUser.following.length}`}</Typography>
       </Card>
     </>
   )

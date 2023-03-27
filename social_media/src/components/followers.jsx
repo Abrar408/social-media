@@ -11,15 +11,15 @@ const Followers = () => {
   },[])
   return (
     <>
-      <Card sx={{backgroundColor:'#fff',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
-        <Typography sx={{fontWeight:'bold',fontSize:'18px'}}>Followers</Typography>
-        <Paper sx={{width:'300px',backgroundColor:'pink',display:'flex',alignItems:'center',padding:'5px'}}>
+      <Card sx={{height:'450px',backgroundColor:'#242526',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>
+        <Typography sx={{fontWeight:'bold',fontSize:'18px',color:'white'}}>Followers</Typography>
+        <Paper sx={{width:'300px',backgroundColor:'#3A3B3C',display:'flex',alignItems:'center',padding:'5px'}}>
           <div style={{flex:'1'}}>
-            <Typography>Username</Typography>
-            <Typography>Email</Typography>
+            <Typography sx={{fontWeight:'bold',color:'white'}}>Username</Typography>
+            <Typography sx={{fontSize:'15px',color:'gray'}}>Email</Typography>
           </div>
           <div>
-            <Button variant='contained'>Follow</Button>
+            <Button variant='contained' sx={{backgroundColor:'#537FE7'}}>Follow</Button>
           </div>
         </Paper>
       </Card>

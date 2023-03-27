@@ -21,6 +21,7 @@ app.use(cors({
 app.use(express.json());
 
 app.post('/userList',async (req,res)=>{
+    console.log("userList")
     const {input,userid} = req.body
     const regex = new RegExp(`${input}`,"i")
     let users = []
@@ -52,7 +53,7 @@ app.post('/userList',async (req,res)=>{
     
 })
 app.post('/regUser',(req,res)=>{
-    
+    console.log("regFollowing")
     let {user,email,gender,pass} = req.body
     
     db.collection('user').findOne({email},(err,result)=>{
@@ -77,7 +78,7 @@ app.post('/regUser',(req,res)=>{
     
 })
 app.post('/loginUser',(req,res)=>{
-    
+    console.log("logFollowing")
     const{email,pass} = req.body
     
     db.collection('user').findOne({email},(err,result)=>{
@@ -115,12 +116,14 @@ app.post('/loginUser',(req,res)=>{
     
 })
 app.post('/addFollowing',(req,res)=>{
+    console.log("addFollowing")
     const {userid,currUser} = req.body
-    console.log(userid,currUser)
+    // console.log(userid,currUser)
     db.collection('user').updateOne({email:`${currUser}`},{$push:{following:`${userid}`}})
     res.status(200).send("added")
 })
 app.post('/getFollowing',(req,res)=>{
+    console.log("getFollowing")
     const {currUser} = req.body
     console.log(currUser)
     let folList = []
@@ -128,18 +131,25 @@ app.post('/getFollowing',(req,res)=>{
         if(err) throw err
         if(result){
             console.log(result.following)
-            result.following.forEach(async (fol)=>{
-                await db.collection('user').findOne({_id:new ObjectId(fol)},(err,result)=>{
-                    folList.push(result)
-                    console.log(result)
-                })    
-                console.log(fol)  
-                if(result.following.length == folList.length){
-                    res.status(200).send(folList)
-                }          
+            if(result.following.length == 0){
+                res.status(200).send([])
+            }else{
+                result.following.forEach(async (fol)=>{
+                    await db.collection('user').findOne({_id:new ObjectId(fol)},(err,result)=>{
+                        folList.push(result)
+                        // console.log(result)
+                    })    
+                    console.log(fol)  
+                    if(result.following.length == folList.length){
+                        console.log(folList)  
+                        console.log("ok")
+                        res.status(200).send(folList)
+                    }          
+                }
+                ) 
             }
-            ) 
-            console.log("1")
+            
+            // console.log("1")
             // if(result.following.length == folList.length){
             //     res.status(200).send(folList)
             // }
@@ -152,6 +162,7 @@ app.post('/getFollowing',(req,res)=>{
     // res.status(200).send("rec")
 })
 app.post('/remFollowing',(req,res)=>{
+    console.log("remFollowing")
     const {userid,currUser} = req.body
     console.log(userid,currUser)
     db.collection('user').updateOne({email:`${currUser}`},{$pull:{following:`${userid}`}})

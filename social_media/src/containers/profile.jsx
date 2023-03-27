@@ -9,10 +9,10 @@ const Profile = () => {
   console.log('rerendering')
   return (
     <>
-    <div style={{backgroundColor:'#cccccc'}}>
+    <div style={{backgroundColor:'#18191A',height:'100vh',margin:'0px'}}>
     <PrimarySearchAppBar rerender={rerender} setRerender={setRerender}/>
-    <div style={{display:'flex',height:'100%',margin:'10px 0px',padding:'10px'}}>
-        <div style={{display:'flex',flex:'2',justifyContent:'center',alignItems:'center'}}>
+    <div style={{display:'flex',margin:'10px 0px',padding:'10px'}}>
+        <div style={{display:'flex',flex:'2',justifyContent:'center'}}>
             <UserDetail rerender={rerender}/>
         </div>
         <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
