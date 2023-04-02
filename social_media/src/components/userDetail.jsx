@@ -7,17 +7,19 @@ import avatar from '../assets/avatar.jpg'
 const UserDetail = ({rerender}) => {
   let currUser = useContext(CurrUser);
   const [fc,setFC] = useState(0)
-  async function getUpdatedBio(){
-    await axios.post('http://127.0.0.1:3000/getFollowing',{currUser:currUser.email})
-    .then(res => {
-      if(res.status == 200){
-        setFC(res.data.length)
-      }
-    })
-    .catch(err => console.error(err))
-    
-  }
+
+  
   useEffect(() => {
+    
+    const getUpdatedBio = async () => {
+      await axios.post('http://127.0.0.1:3000/following/get',{currUser:currUser.email})
+      .then(res => {
+        if(res.status == 200){
+          setFC(res.data.length)
+        }
+      })
+      .catch(err => console.error(err))
+    }
     getUpdatedBio()
     return;
   },[rerender])
@@ -29,7 +31,7 @@ const UserDetail = ({rerender}) => {
         </Paper>
         <div style={{display:'flex'}}>
           <Typography sx={{flex:'1', color:'gray'}}>{`Username:`}</Typography>
-          <Typography sx={{flex:'2',color:'white'}}>{`${currUser.user}`}</Typography>
+          <Typography sx={{flex:'2',color:'white'}}>{`${currUser.username}`}</Typography>
         </div>
         <div style={{display:'flex'}}>
           <Typography sx={{flex:'1', color:'gray'}}>{`Email:`}</Typography>

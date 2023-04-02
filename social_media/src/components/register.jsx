@@ -62,7 +62,7 @@ const Register = () => {
     }
     const registerUser = () => {
         if(validate()){
-            axios.post('http://localhost:3000/regUser',cred)
+            axios.post('http://localhost:3000/auth/register',cred)
             .then(res => {
                 if(res.status == 200){
                     console.log(res.data)

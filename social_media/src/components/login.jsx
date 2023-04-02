@@ -37,16 +37,17 @@ const Login = ({setAuth,setCurrUser}) => {
     const loginUser = async () => {
         if(checkIfEmpty()){
             if(checkEmail()){
-                 await axios.post('http://localhost:3000/loginUser',cred)
+                 await axios.post('http://localhost:3000/auth/login',cred)
                 .then(res =>{
                     if(res.status == 200){
                         setCurrUser(res.data)
-                        console.log(currUser)
+                        console.log(res.data)
                         setAuth(true)
                     }
                 })
                 .catch(err => {
-                    setErr(err.response.data)
+                    // setErr(err.response.data)
+                    console.log(err)
                 })          
                 
             }

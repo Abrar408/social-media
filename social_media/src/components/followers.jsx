@@ -8,26 +8,19 @@ const Followers = () => {
   const currUser = useContext(CurrUser)
   const [followerList,setFollowerList] = useState([])
 
-  async function getFollowers(){
-    // console.log("1")
-    // console.log(followingList)
-    // console.log(currUser._id)
-    await axios.post('http://127.0.0.1:3000/getFollowers',{currUser:currUser._id})
-    .then(res => {
-      if(res.status == 200){
-        // setFollowingList(res.data)
-        // console.log("2")
-        // console.log(followingList)
-        // console.log("4")
-      }
-    })
-    .catch(err => console.error(err))
-    return;
-  }
-  useEffect(async () => {
-      getFollowers()
+  // async function getFollowers(){
+  //   await axios.post('http://127.0.0.1:3000/getFollowers',{currUser:currUser._id})
+  //   .then(res => {
+  //     if(res.status == 200){
+  //     }
+  //   })
+  //   .catch(err => console.error(err))
+  //   return;
+  // }
+  // useEffect(async () => {
+  //     // getFollowers()
 
-  },[])
+  // },[])
   return (
     <>
       <Card sx={{height:'450px',backgroundColor:'#242526',padding:'10px',display:'flex',flexDirection:'column',alignItems:'center'}}>

@@ -8,25 +8,10 @@ const Following = ({rerender,setRerender}) => {
   const currUser = useContext(CurrUser)
   const [followingList,setFollowingList] = useState([])
 
-  async function getFollowing(){
-    console.log("1")
-    console.log(followingList)
-    console.log("3")
-    await axios.post('http://127.0.0.1:3000/getFollowing',{currUser:currUser.email})
-    .then(res => {
-      if(res.status == 200){
-        setFollowingList(res.data)
-        console.log("2")
-        console.log(followingList)
-        console.log("4")
-      }
-    })
-    .catch(err => console.error(err))
-    return;
-  }
+  
   const remFollowing = async (user) => {
     console.log(user.fol._id)
-    await axios.post('http://127.0.0.1:3000/remFollowing',{userid: user.fol._id,currUser:currUser.email})
+    await axios.post('http://127.0.0.1:3000/following/remove',{userid: user.fol._id,currUser:currUser.email})
     .then(res => {
       if(res.status == 200){
         console.log(res.data)
@@ -40,6 +25,16 @@ const Following = ({rerender,setRerender}) => {
     .catch(err => console.log(err))
   }
   useEffect(()=>{
+
+    const getFollowing = async () => {
+      await axios.post('http://127.0.0.1:3000/following/get',{currUser:currUser.email})
+      .then(res => {
+        if(res.status == 200){
+          setFollowingList(res.data)
+        }
+      })
+      .catch(err => console.error(err))
+    }
     getFollowing();
     return;
   },[rerender])
@@ -74,7 +69,7 @@ const Following = ({rerender,setRerender}) => {
             return(
               <Paper sx={{width:'300px',backgroundColor:'#3A3B3C',display:'flex',alignItems:'center',padding:'5px', mb:'2px',borderBottom:'1px solid #03DAC6 '}}>
                 <div style={{flex:'1'}}>
-                  <Typography sx={{fontWeight:'bold',color:'white'}}>{fol.user}</Typography>
+                  <Typography sx={{fontWeight:'bold',color:'white'}}>{fol.username}</Typography>
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{fol.email}</Typography>
                 </div>
                 <div>
