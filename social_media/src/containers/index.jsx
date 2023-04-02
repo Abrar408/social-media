@@ -8,6 +8,7 @@ import Login from '../components/login'
 import Register from '../components/register';
 import { Grid, Paper } from '@mui/material';
 import LoginImage from '../assets/login.jpg'
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -21,7 +22,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -63,7 +64,7 @@ export default function BasicTabs(props) {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <Login setAuth={props.setAuth} setCurrUser={props.setCurrUser}/>
+            <Login setAuth={props.setAuth}/>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Register />

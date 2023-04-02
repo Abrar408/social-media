@@ -1,55 +1,59 @@
-import { Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import { Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from '@mui/material';
+import React, {  useState } from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import axios from 'axios'
-import {CurrUser} from '../App'
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import { setCurrUser, setLoggedInUser, setAccessToken} from '../features/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({setAuth,setCurrUser}) => {
-    let currUser = useContext(CurrUser)
+const Login = ({setAuth}) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [cred,setCred] = useState({
         email:'',
-        pass:''
+        pass:'',
     })
     const [err,setErr] = useState('')
 
     const checkIfEmpty =()=>{
         if(cred.email == '' || cred.pass == ''){
             setErr('required fields cannot be blank');
-            return false
+            return false;
         }
         else{
             setErr('')
-            return true
+            return true;
         }
     }
     const checkEmail =()=>{
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(cred.email))
         {
             setErr('');
-            return true
+            return true;
         }else{
             setErr('email is not a valid email address');
-            return false
+            return false;
         }            
     }
     const loginUser = async () => {
         if(checkIfEmpty()){
             if(checkEmail()){
-                 await axios.post('http://localhost:3000/auth/login',cred)
+                 await axios.post('http://localhost:3000/auth/login',cred,{
+                    withCredentials: true
+                })
                 .then(res =>{
                     if(res.status == 200){
-                        setCurrUser(res.data)
-                        console.log(res.data)
-                        setAuth(true)
+                        dispatch(setCurrUser(res.data.result));
+                        dispatch(setLoggedInUser(res.data.result));
+                        dispatch(setAccessToken(res.data.accessToken));
+                        navigate('/dashboard');
                     }
                 })
                 .catch(err => {
-                    // setErr(err.response.data)
-                    console.log(err)
-                })          
-                
+                    console.log(err);
+                }) 
             }
         }
     }

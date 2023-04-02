@@ -1,11 +1,8 @@
-import { Button, Card, Paper, Typography } from '@mui/material'
-import React, { useContext, useEffect, useState } from 'react'
-import { CurrUser } from '../App';
+import { Button, Card, Paper, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 
 const Followers = () => {
-  
-  const currUser = useContext(CurrUser)
   const [followerList,setFollowerList] = useState([])
 
   // async function getFollowers(){

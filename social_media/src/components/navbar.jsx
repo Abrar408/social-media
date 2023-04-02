@@ -14,8 +14,10 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import axios from 'axios';
 import { Stack } from '@mui/system';
-import { CurrUser } from '../App';
 import AddCircleOutlineOutlined from '@mui/icons-material/AddCircleOutlineOutlined';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCurrUser, setLoggedInUser, setAccessToken } from '../features/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,59 +62,63 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function SearchAppBar({rerender,setRerender}) {
-  let currUser = React.useContext(CurrUser);
-  const [input,setInput] = React.useState('')
-  const [userList,setUserList] = React.useState([])  
+  const currUser = useSelector((state) => state.user.currUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [input,setInput] = React.useState('');
+  const [userList,setUserList] = React.useState([]);
 
-  React.useEffect(()=>{
-    
+  React.useEffect(()=>{    
     const getUserList = async () => {
       if(input){
-        await axios.post('http://127.0.0.1:3000/userList/get',{input,userid:currUser._id})
+        await axios.post('http://127.0.0.1:3000/userList/get',{input,userid:currUser.email})
         .then(async res => {
           if(res.status == 200){
-            // console.log(res.data)
-            setUserList(res.data)
+            setUserList(res.data);
           }
         })
         .catch(err => console.log(err))
       }else{
-        setUserList([])
+        setUserList([]);
       }
     }
     getUserList();
-
   },[input,rerender])
 
   const addFollowing = async (user) => {
-    console.log(user.user)
     await axios.post('http://127.0.0.1:3000/following/add',{userid: user.user._id,currUser:currUser.email})
     .then(res => {
       if(res.status == 200){
-        // console.log(res.data)
         if(rerender){
-          setRerender(false)
+          setRerender(false);
         }else{
-          setRerender(true)
+          setRerender(true);
         }
       }
     })
     .catch(err => console.log(err))
   }
-        
+  const handleLogout = async () => {
+    await axios.get('http://localhost:3000/logout',{
+      withCredentials: true,
+    })
+    dispatch(setCurrUser({}));
+    dispatch(setLoggedInUser({}));
+    dispatch(setAccessToken(''));
+    navigate('/');
+  }
   return (
     <>
     <Box sx={{ flexGrow: 1}}>
       <AppBar position="static" sx={{backgroundColor:'#242526'}}>
-        <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
-          
+        <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>          
           <Typography
             variant="h6"
             noWrap
             component="div" 
             sx={{textTransform:'uppercase'}}           
           >
-            {currUser.user}
+            {currUser.username}
           </Typography>
           <Search sx={{borderBottom:'3px solid #03DAC6'}}>
             <SearchIconWrapper>
@@ -125,7 +131,7 @@ export default function SearchAppBar({rerender,setRerender}) {
               onChange={(e)=>{setInput(e.target.value)}}
             />
           </Search>
-          <Button variant="contained" endIcon={<LockRoundedIcon/>} sx={{textTransform:'none',backgroundColor:'#03DAC6',color:'black',fontWeight:'bold',':hover':{backgroundColor:'#11bfaf'}}}>Log Out</Button>
+          <Button variant="contained" endIcon={<LockRoundedIcon/>} sx={{textTransform:'none',backgroundColor:'#03DAC6',color:'black',fontWeight:'bold',':hover':{backgroundColor:'#11bfaf'}}} onClick={()=>{handleLogout()}}>Log Out</Button>
         </Toolbar>
       </AppBar>
     </Box>
@@ -133,14 +139,13 @@ export default function SearchAppBar({rerender,setRerender}) {
       {userList.map((user)=>{
         return (
           <>
-            <Paper elevation='0' sx={{display:'flex',p:'5px',alignItems:'center',border:'none',backgroundColor:'#3A3B3C',borderRadius:'0px'}}>
+            <Paper sx={{display:'flex',p:'5px',alignItems:'center',border:'none',backgroundColor:'#3A3B3C',borderRadius:'0px'}}>
               <Stack sx={{flex:'1'}}>
                   <Typography sx={{fontWeight:'bold',color:'white'}}>{user.doc.username}</Typography>
                   <Typography sx={{fontSize:'15px',color:'gray'}}>{user.doc.email}</Typography>
               </Stack>
               <Stack>
-                {user.b ? <Button variant='outlined' sx={{textTransform:'none'}}>following</Button> :<Button variant='contained' sx={{backgroundColor:'#537FE7',textTransform:'none'}} startIcon={<AddCircleRoundedIcon/>} onClick={()=>{addFollowing({user:user.doc})}}>Follow</Button> }
-                {/* <IconButton><CheckCircleRoundedIcon sx={{backgroundColor:'white',color:'green',borderRadius:'50%',boder:'3px solid green',outline:'3px solid green'}}/></IconButton> */}
+                {user.b ? <Button variant='outlined' sx={{textTransform:'none'}}>following</Button> :<Button variant='contained' sx={{backgroundColor:'#537FE7',textTransform:'none'}} startIcon={<AddCircleRoundedIcon/>} onClick={()=>{addFollowing({user:user.doc})}}>Follow</Button> }                
               </Stack>
             </Paper>
           </>

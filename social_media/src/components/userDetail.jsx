@@ -1,26 +1,29 @@
-import { Card, Paper, Typography } from '@mui/material'
+import { Card, Paper, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import avatar from '../assets/avatar.jpg';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
-import { CurrUser } from '../App';
-import avatar from '../assets/avatar.jpg'
 
 const UserDetail = ({rerender}) => {
-  let currUser = useContext(CurrUser);
-  const [fc,setFC] = useState(0)
-
+  const currUser = useSelector((state) => state.user.currUser);
+  const accessToken = useSelector((state) => state.user.accessToken);
+  const [fc,setFC] = useState(0);
   
-  useEffect(() => {
-    
+  useEffect(() => {    
     const getUpdatedBio = async () => {
-      await axios.post('http://127.0.0.1:3000/following/get',{currUser:currUser.email})
+      await axios.post('http://127.0.0.1:3000/following/get',{currUser:currUser.email},{
+        headers: {
+          'authorization': `Bearer ${accessToken}`,
+        }
+      })
       .then(res => {
         if(res.status == 200){
-          setFC(res.data.length)
+          setFC(res.data.length);
         }
       })
       .catch(err => console.error(err))
     }
-    getUpdatedBio()
+    getUpdatedBio();
     return;
   },[rerender])
   return (
@@ -52,8 +55,7 @@ const UserDetail = ({rerender}) => {
         <div style={{display:'flex'}}>
           <Typography sx={{flex:'1', color:'gray'}}>{`Following:`}</Typography>
           <Typography sx={{flex:'2',color:'white'}}>{`${fc}`}</Typography>
-        </div>
-        
+        </div>        
       </Card>
     </>
   )

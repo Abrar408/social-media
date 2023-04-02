@@ -6,13 +6,13 @@ const getUserList = async (req, res) => {
     const regex = new RegExp(`${input}`,"i");
     let users = [];
     let currUser = [];
-    const result = await User.findOne({_id: new ObjectId(userid)});
-    if(!result) return res.status(500);
+    const result = await User.findOne({email: userid});
+    if(!result) return res.status(500).send('user not found');
     currUser = result.following;
     const cursor = User.find({username:regex}).cursor();
 
     for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
-        if(doc._id.toString() != userid){
+        if(doc.email != userid){
             if(currUser.includes(doc._id.toString())){
                 users.push({doc,b:true});
             }

@@ -1,10 +1,13 @@
 const User = require('../model/users');
 
 const getFollowing = async (req,res) => {
+    console.log('getFollowing')
+    console.log(req.user)
+    // const {currUser} = req.user;
     const {currUser} = req.body;
     let followingList = [];
     const result = await User.findOne({email: currUser});
-    if(!result) return res.status(500);
+    if(!result) return res.status(500).send('User not found');
     if(result.following.length == 0) return res.status(200).send([]);
     await result.following.forEach(async (following) => {
         const new_result = await User.findOne({_id: following.toString()});

@@ -1,23 +1,16 @@
-import { createContext, useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-import SignInSignOut from './containers/index'
-import Profile from './containers/profile'
-let CurrUser = createContext();
+import { useState } from 'react';
+import {Routes,Route,useNavigate} from 'react-router-dom';
+import SignInSignOut from './containers/index';
+import Profile from './containers/profile';
 
 function App() {
-  const [auth, setAuth] = useState(false)
-  const [currUser, setCurrUser] = useState('')
 
-  return (
-    <>
-      <CurrUser.Provider value={currUser}>
-      {auth ? <Profile/> : <SignInSignOut setAuth={setAuth} setCurrUser={setCurrUser} />}
-      </CurrUser.Provider>
-    </>
+  return (    
+    <Routes>
+      <Route path='/' element={<SignInSignOut/>} />
+      <Route path='/dashboard/*' element={<Profile/>} />
+    </Routes>    
   ) 
 }
 
 export default App
-export {CurrUser}
