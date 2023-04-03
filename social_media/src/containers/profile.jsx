@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 
 const Profile = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [rerender,setRerender] = useState(true);
@@ -22,6 +23,7 @@ const Profile = () => {
       .then(res => {
         dispatch(setCurrUser(res.data.result))
         dispatch(setAccessToken(res.data.accessToken));
+        setLoggedIn(true)
         if(rerender){
           setRerender(false);
         }else{
@@ -39,21 +41,24 @@ const Profile = () => {
   
   console.log('rerendering');
   return (
-    <>
-    <div style={{backgroundColor:'#18191A',height:'100vh',margin:'0px'}}>
+    <>{loggedIn ? <div style={{backgroundColor:'#18191A',height:'100vh',margin:'0px'}}>
     <PrimarySearchAppBar rerender={rerender} setRerender={setRerender}/>
     <div style={{display:'flex',margin:'10px 0px',padding:'10px'}}>
         <div style={{display:'flex',flex:'2',justifyContent:'center'}}>
             <UserDetail rerender={rerender}/>
         </div>
         <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
-            {/* <Followers rerender={rerender}/> */}
+            <Followers rerender={rerender} setRerender={setRerender}/>
         </div>
         <div style={{display:'flex',flex:'1',justifyContent:'center'}}>
             <Following rerender={rerender} setRerender={setRerender}/>
         </div>
     </div>
-    </div>
+    </div> : 
+    <div style={{backgroundColor:'#18191A',height:'100vh',width:'100vw',display:'flex'}}>
+      <div style={{margin:'auto',color:'white', fontSize:'50px'}}>Loading...</div>
+    </div>}
+    
     </>
   )
 }

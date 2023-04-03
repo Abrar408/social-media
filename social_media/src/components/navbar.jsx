@@ -63,6 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function SearchAppBar({rerender,setRerender}) {
   const currUser = useSelector((state) => state.user.currUser);
+  const accessToken = useSelector((state) => state.user.accessToken);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [input,setInput] = React.useState('');
@@ -71,7 +72,11 @@ export default function SearchAppBar({rerender,setRerender}) {
   React.useEffect(()=>{    
     const getUserList = async () => {
       if(input){
-        await axios.post('http://127.0.0.1:3000/userList/get',{input,userid:currUser.email})
+        await axios.post('http://127.0.0.1:3000/userList/get',{input,userid:currUser.email},{
+          headers: {
+            'authorization': `Bearer ${accessToken}`,
+          }
+        })
         .then(async res => {
           if(res.status == 200){
             setUserList(res.data);
@@ -86,7 +91,11 @@ export default function SearchAppBar({rerender,setRerender}) {
   },[input,rerender])
 
   const addFollowing = async (user) => {
-    await axios.post('http://127.0.0.1:3000/following/add',{userid: user.user._id,currUser:currUser.email})
+    await axios.post('http://127.0.0.1:3000/following/add',{userid: user.user._id,currUser:currUser.email},{
+      headers: {
+        'authorization': `Bearer ${accessToken}`,
+      }
+    })
     .then(res => {
       if(res.status == 200){
         if(rerender){

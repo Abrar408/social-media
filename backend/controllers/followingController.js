@@ -20,7 +20,10 @@ const getFollowing = async (req,res) => {
 }
 
 const addFollowing = async (req,res) => {
+    // console.log(req.body)
     const {userid,currUser} = req.body
+    // console.log(userid,currUser)
+    console.log(userid,currUser)
     await User.updateOne({email: currUser},{$push:{following: userid}})
     res.status(200).send("added")
 }

@@ -10,7 +10,11 @@ const Following = ({rerender,setRerender}) => {
   const [followingList,setFollowingList] = useState([]);
   
   const remFollowing = async (user) => {
-    await axios.post('http://127.0.0.1:3000/following/remove',{userid: user.fol._id,currUser:currUser.email})
+    await axios.post('http://127.0.0.1:3000/following/remove',{userid: user.fol._id,currUser:currUser.email},{
+      headers: {
+        'authorization': `Bearer ${accessToken}`,
+      }
+    })
     .then(res => {
       if(res.status == 200){
         if(rerender){

@@ -31,12 +31,12 @@ const login = async (req, res) => {
         const accessToken = jwt.sign(
             { "email":result.email },
             process.env.ACCESS_TOKEN_SECRET,
-            {expiresIn: '60s'}
+            {expiresIn: '1h'}
         );
         const refreshToken = jwt.sign(
             { "email":result.email },
             process.env.REFRESH_TOKEN_SECRET,
-            {expiresIn: '1h'}
+            {expiresIn: '1d'}
         );
         await User.updateOne({email:result.email},{$set:{refreshToken}});
         res.cookie('jwt',refreshToken, {httpOnly: true, maxAge: 24*60*60*1000, sameSite:'none', secure: true});
